@@ -109,10 +109,10 @@ namespace hash {
         return dist;
     }
 
-    int distance(const std::string s, const std::string k) {
+    double similarity(const std::string s, const std::string k) {
         unsigned long hash_s = simhash(s);
         unsigned long hash_k = simhash(k);
-        return hamming_distance(hash_s, hash_k);
+        return 1 - hamming_distance(hash_s, hash_k) / 64.0;
     }
 }
 

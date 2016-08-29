@@ -28,23 +28,8 @@ lInfo("build target(s): " + str(map(str, BUILD_TARGETS)))
 lInfo("run with cpus  : " + str(multiprocessing.cpu_count()))
 line()
 
-#stylechecker = Builder(action='./test_convention.sh $SOURCES', suffix='', src_suffix='')
-#valgrind = Builder(action='valgrind ./$SOURCES', suffix='', src_suffix='')
-
-#lInfo("check local installed libs")
-#dline()
-#os.system("./prepare.sh")
-#line()
-#lInfo("add build infos")
-#dline()
-#os.system("./addbuildinfos.sh")
-#line()
 
 env = Environment(CPPPATH = ["src/"])
-
-#env = Environment(CPPPATH = ["src/", "libs/"],
-#                  BUILDERS = {'StyleCheck' : stylechecker, 'Valgrind': valgrind})
-
 
 env.Append(LINKFLAGS=['-pthread'])
 
@@ -52,8 +37,7 @@ env.Decider('MD5')
 
 conf = Configure(env)
 
-needed_libs = [
-    'stdc++fs']
+needed_libs = ['stdc++fs']
 
 
 for lib in needed_libs:
