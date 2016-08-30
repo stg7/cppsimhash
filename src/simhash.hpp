@@ -3,62 +3,19 @@
 
 #include <iostream>
 #include <string>
-#include <sstream>
 #include <vector>
-#include <algorithm>
 #include <map>
 #include <bitset>
 
 #include "haesni.hpp"
+#include "utils.hpp"
 
-namespace utils {
-    inline std::vector<std::string>& split(const std::string& s, char delim, std::vector<std::string>& elems) {
-        std::stringstream ss(s);
-        std::string item;
-        while (std::getline(ss, item, delim)) {
-            elems.emplace_back(item);
-        }
-        return elems;
-    }
-
-    /*
-    *   split a string by delimiter and return result in a vector of strings
-    *   \param s string to split
-    *   \param delim using this character as a delimiter
-    *   \return splitted strings as a vector
-    */
-    inline std::vector<std::string> split(const std::string& s, char delim) {
-        std::vector<std::string> elems;
-        split(s, delim, elems);
-        return elems;
-    }
-
-    void replaceAll(std::string& str, const std::string& from, const std::string& to) {
-        if (from.empty())
-            return;
-        size_t start_pos = 0;
-        while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
-            str.replace(start_pos, from.length(), to);
-            start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
-        }
-    }
-
-    std::vector<std::string> tokenize(std::string s) {
-        // tidy up string
-        std::transform(s.begin(), s.end(), s.begin(), ::tolower);
-        for (auto c : "\n,.-#+*+?=)(/&%$§\"!^<>|;:_\\´`") {
-            replaceAll(s, c + std::string(""), " ");
-        }
-
-        return split(s, ' ');
-    }
-}
 
 namespace hash {
 
     unsigned long simhash(const std::string s) {
         // build bag of word representation
-        // TODO(stg7): maybe add ngram (1..3) creation for extending bag of word approach
+        // TODO(stg7): maybe add ngram (2..3) creation for extending bag of word approach
         std::map<std::string, long> bag_of_words;
         auto tokens = utils::tokenize(s);
         for (auto& t: tokens) {
