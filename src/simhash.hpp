@@ -25,7 +25,7 @@ namespace hash {
             if (features.find(t) == features.end()) {
                 features[t] = 0;
             }
-            features[t] = features[t] + 3;
+            features[t] = features[t] + 1;
         }
 
         // build 2 grams
@@ -57,7 +57,7 @@ namespace hash {
             if (features.find(_3gram) == features.end()) {
                 features[_3gram] = 0;
             }
-            features[_3gram] = features[_3gram] + 1;
+            features[_3gram] = features[_3gram] + 3;
         }
 
         // do simhashing
