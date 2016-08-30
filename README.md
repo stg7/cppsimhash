@@ -1,7 +1,7 @@
 cppsimhash
 ==========
 
-c++ simhash implementation for documents 
+c++ simhash implementation for documents
 and an additional (prototyp) simhash index for text documents
 
 Required
@@ -17,13 +17,13 @@ Just run scons
 
 Simidx
 ------
-add a text document using `add_to_simidx.sh`:
+add a text document using `simidx.py`:
 ```
 # add one document
-./add_to_simidx.sh text.txt   
+./simidx.py add textfile
 
 # add a folder
-./add_to_simidx.sh textfolder
+./simidx.py add textfolder
 ```
 
 Idea
