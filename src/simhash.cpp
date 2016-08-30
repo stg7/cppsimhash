@@ -29,6 +29,10 @@ int main(int argc, char* argv[]) {
         std::cout << hash::simhash(content) << std::endl;
     }
 
+    if (argc == 2) {
+        std::cout << hash::simhash(read_file_as_string(argv[1])) << std::endl;
+    }
+
     if (argc == 3) {
         if (!fs::exists(argv[1]) || !fs::exists(argv[2])) {
             std::cout << "[ERROR] there is something wrong with your input files "
