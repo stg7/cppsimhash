@@ -66,7 +66,6 @@ else:
 header = set(glob.glob("src/*.hpp") +  glob.glob("src/*/*.hpp"))
 sources = set(glob.glob("src/*.cpp") + glob.glob("src/*/*.cpp")) - set(["src/simhash.cpp"])
 
-
 simhash = env.Program('simhash', ["src/simhash.cpp"] + list(sources))
 
 Default(simhash)
