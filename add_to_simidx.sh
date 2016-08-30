@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO(stg7) better command line handling, maybe using python 
+# and do it parallel somehow
+
 add_file_without_check() {
     infile="$1"
     idxfile="$2"
