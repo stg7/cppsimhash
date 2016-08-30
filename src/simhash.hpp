@@ -58,6 +58,7 @@ namespace hash {
 
     unsigned long simhash(const std::string s) {
         // build bag of word representation
+        // TODO(stg7): maybe add ngram (1..3) creation for extending bag of word approach
         std::map<std::string, long> bag_of_words;
         auto tokens = utils::tokenize(s);
         for (auto& t: tokens) {
