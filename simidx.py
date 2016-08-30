@@ -7,6 +7,7 @@ from multiprocessing import Pool
 import multiprocessing
 import subprocess
 
+
 def shell_call(call):
     """
     Run a program via system call and return stdout + stderr.
@@ -88,7 +89,7 @@ def simidx_query(argsdict):
     # build hash of input document
     queryfilehash = int(shell_call("./simhash {d}".format(d=argsdict["querydoc"])).strip())
 
-    print(queryfilehash)
+    print("hash of inputfile {} : {}".format(argsdict["querydoc"],queryfilehash))
     lowerBound = float(argsdict["lowerBound"])
     res = []
     for k in simidx:
