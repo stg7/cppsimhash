@@ -26,4 +26,6 @@ add a text document using `add_to_simidx.sh`:
 ./add_to_simidx.sh textfolder
 ```
 
-
+Idea
+----
+For the approach and core idea have a look at papers in `doc`.
