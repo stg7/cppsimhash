@@ -14,23 +14,55 @@
 namespace hash {
 
     unsigned long simhash(const std::string s) {
-        // build bag of word representation
         // TODO(stg7): maybe add ngram (2..3) creation for extending bag of word approach
-        std::map<std::string, long> bag_of_words;
+        std::map<std::string, long> features;
         auto tokens = utils::tokenize(s);
+        // build bag of word representation
         for (auto& t: tokens) {
             if (t == "") {  ///< ignore empty tokens
                 continue;
             }
-            if (bag_of_words.find(t) == bag_of_words.end()) {
-                bag_of_words[t] = 0;
+            if (features.find(t) == features.end()) {
+                features[t] = 0;
             }
-            bag_of_words[t] = bag_of_words[t] + 1;
+            features[t] = features[t] + 3;
+        }
+
+        // build 2 grams
+        for (unsigned long i = 0; i < tokens.size() - 1; i ++) {
+            auto t1 = tokens[i];
+            auto t2 = tokens[i + 1];
+            if (t1 == "") {  ///< ignore empty tokens
+                continue;
+            }
+
+            auto _2gram = t1 + " " + t2;
+            if (features.find(_2gram) == features.end()) {
+                features[_2gram] = 0;
+            }
+            features[_2gram] = features[_2gram] + 2;
+        }
+
+        // build 3 grams
+        for (unsigned long i = 0; i < tokens.size() - 2; i ++) {
+            auto t1 = tokens[i];
+            auto t2 = tokens[i + 1];
+            auto t3 = tokens[i + 2];
+
+            if (t1 == "") {  ///< ignore empty tokens
+                continue;
+            }
+
+            auto _3gram = t1 + " " + t2 + " " + t3;
+            if (features.find(_3gram) == features.end()) {
+                features[_3gram] = 0;
+            }
+            features[_3gram] = features[_3gram] + 1;
         }
 
         // do simhashing
         std::vector<long> sim_vec(64);
-        for (auto x: bag_of_words) {
+        for (auto x: features) {
             auto token = x.first;
             auto freq = x.second;
             unsigned long hash = haesni::hash(&token[0], token.length());
