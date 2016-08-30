@@ -51,9 +51,13 @@ def calc_similarity(x, y):
     return 1 - sum(xx != yy for xx, yy in zip(bx, by)) / 64.0
 
 
-def simidx_add_file(filename, simidxfile="_simidx"):
+def calc_simhash(filename):
     cmd = "./simhash {}".format(filename)
-    shash = shell_call(cmd).strip()
+    return shell_call(cmd).strip()
+
+
+def simidx_add_file(filename, simidxfile="_simidx"):
+    shash = calc_simhash(filename)
     f = open(simidxfile, "a")
     f.write("{} : {}\n".format(shash, filename))
     f.close()
@@ -61,14 +65,19 @@ def simidx_add_file(filename, simidxfile="_simidx"):
 
 def simidx_add_dir(dirname, simidxfile="_simidx"):
     infiles = find(dirname)
-    cpu_count = 10 * multiprocessing.cpu_count()
+    cpu_count = multiprocessing.cpu_count()
     pool = Pool(processes=cpu_count)
-    pool.starmap(simidx_add_file, zip(infiles, [simidxfile for x in infiles]))
+    res = pool.map(calc_simhash, infiles)
+    f = open(simidxfile, "a")
+    for shash, filename in zip(res, infiles):
+        f.write("{} : {}\n".format(shash, filename))
+    f.close()
 
 
 def simidx_add(argsdict):
-    if argsdict["c"]:
+    if argsdict["c"] and os.path.isfile(argsdict["idx"]):
         os.remove(argsdict["idx"])
+
     for w in argsdict["what"]:
         if os.path.isfile(w):
             simidx_add_file(w, argsdict["idx"])
