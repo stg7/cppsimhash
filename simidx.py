@@ -59,20 +59,21 @@ def simidx_add_file(filename, simidxfile="_simidx"):
     f.close()
 
 
-def simidx_add_dir(dirname):
+def simidx_add_dir(dirname, simidxfile="_simidx"):
     infiles = find(dirname)
     cpu_count = 10 * multiprocessing.cpu_count()
     pool = Pool(processes=cpu_count)
-
-    pool.map(simidx_add_file, infiles)
+    pool.starmap(simidx_add_file, zip(infiles, [simidxfile for x in infiles]))
 
 
 def simidx_add(argsdict):
+    if argsdict["c"]:
+        os.remove(argsdict["idx"])
     for w in argsdict["what"]:
         if os.path.isfile(w):
-            simidx_add_file(w)
+            simidx_add_file(w, argsdict["idx"])
         else:
-            simidx_add_dir(w)
+            simidx_add_dir(w, argsdict["idx"])
 
 
 def simidx_query(argsdict):
@@ -109,6 +110,7 @@ def main(params):
 
     parser_add = subparsers.add_parser('add', help='add a file to simidx', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser_add.add_argument('what', nargs="*", help='file or directory')
+    parser_add.add_argument('-c', action='store_true', help='clean index file before adding new files')
 
     parser_query = subparsers.add_parser('query', help='query simindex', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser_query.add_argument('querydoc', help='document for query')
