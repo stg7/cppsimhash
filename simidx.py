@@ -65,7 +65,7 @@ def simidx_add_file(filename, simidxfile="_simidx"):
 
 def simidx_add_dir(dirname, simidxfile="_simidx"):
     infiles = find(dirname)
-    cpu_count = multiprocessing.cpu_count()
+    cpu_count = 2 # multiprocessing.cpu_count()
     pool = Pool(processes=cpu_count)
     res = pool.map(calc_simhash, infiles)
     f = open(simidxfile, "a")

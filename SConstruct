@@ -39,6 +39,7 @@ conf = Configure(env)
 
 needed_libs = ['stdc++fs']
 
+#env.ParseConfig('/usr/bin/python3-config --includes --libs')
 
 for lib in needed_libs:
     if not conf.CheckLib(lib, language="c++"):
@@ -64,8 +65,10 @@ else:
 
 
 header = set(glob.glob("src/*.hpp") +  glob.glob("src/*/*.hpp"))
-sources = set(glob.glob("src/*.cpp") + glob.glob("src/*/*.cpp")) - set(["src/simhash.cpp"])
+sources = set(glob.glob("src/*.cpp") + glob.glob("src/*/*.cpp")) - set(["src/simhash.cpp", "src/pysimhash.cpp"])
 
-simhash = env.Program('simhash', ["src/simhash.cpp"] + list(sources))
+#simhash = env.Program('simhash', ["src/simhash.cpp"] + list(sources))
 
-Default(simhash)
+env.SharedLibrary("pysimhash", ["src/pysimhash.cpp"] + list(sources))
+
+#Default(simhash)
