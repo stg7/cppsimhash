@@ -1,5 +1,6 @@
 
 #ifndef SIMHASH_H
+#define SIMHASH_H
 
 #include <iostream>
 #include <string>

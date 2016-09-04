@@ -67,8 +67,8 @@ else:
 header = set(glob.glob("src/*.hpp") +  glob.glob("src/*/*.hpp"))
 sources = set(glob.glob("src/*.cpp") + glob.glob("src/*/*.cpp")) - set(["src/simhash.cpp", "src/pysimhash.cpp"])
 
-#simhash = env.Program('simhash', ["src/simhash.cpp"] + list(sources))
+simhash = env.Program('simhash', ["src/simhash.cpp"] + list(sources))
 
-env.SharedLibrary("pysimhash", ["src/pysimhash.cpp"] + list(sources))
+simhash_lib = env.SharedLibrary("simhash", ["src/pysimhash.cpp"] + list(sources))
 
-#Default(simhash)
+Default(simhash, simhash_lib)
