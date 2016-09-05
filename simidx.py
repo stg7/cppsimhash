@@ -53,6 +53,7 @@ def calc_similarity(x, y):
 
 def calc_simhash(filename):
     cmd = "./simhash {}".format(filename)
+    print(filename + " done.")
     return shell_call(cmd).strip()
 
 
