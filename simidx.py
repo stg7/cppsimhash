@@ -7,18 +7,8 @@ from multiprocessing import Pool
 import multiprocessing
 import subprocess
 
+import simhashlib
 
-def shell_call(call):
-    """
-    Run a program via system call and return stdout + stderr.
-    @param call programm and command line parameter list, e.g "ls /"
-    @return stdout and stderr of programm call
-    """
-    try:
-        output = subprocess.check_output(call, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
-    except Exception as e:
-        output = str(e.output)
-    return output
 
 def find(dirname):
     tmp = glob.glob(dirname + "/*")
@@ -44,17 +34,14 @@ def read_simidx(idxfilename):
 
 
 def calc_similarity(x, y):
-    get_bin = lambda x: format(x, 'b').zfill(64)
-
-    bx = get_bin(x)
-    by = get_bin(y)
-    return 1 - sum(xx != yy for xx, yy in zip(bx, by)) / 64.0
+    dist = simhashlib.hamming_distance(x, y)
+    return 1 - dist / 64.0
 
 
 def calc_simhash(filename):
     cmd = "./simhash {}".format(filename)
     print(filename + " done.")
-    return shell_call(cmd).strip()
+    return simhashlib.simhash_file(filename)
 
 
 def simidx_add_file(filename, simidxfile="_simidx"):
@@ -98,7 +85,7 @@ def simidx_query(argsdict):
     simidx = read_simidx(argsdict["idx"])
 
     # build hash of input document
-    queryfilehash = int(shell_call("./simhash {d}".format(d=argsdict["querydoc"])).strip())
+    queryfilehash = calc_simhash(argsdict["querydoc"])
 
     print("hash of inputfile {} : {}".format(argsdict["querydoc"],queryfilehash))
     lowerBound = float(argsdict["lowerBound"])

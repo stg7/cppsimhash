@@ -1,14 +1,27 @@
 
 #ifndef UTILS_H
+#define UTILS_H
 
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <vector>
 #include <algorithm>
 
 
 namespace utils {
+
+    std::string read_file_as_string(std::string filename) {
+        std::ifstream infile(filename.c_str());
+        std::string result = "";
+        std::string line;
+        while (std::getline(infile, line)) {
+            result += line + "\n";
+        }
+        return result;
+    }
+
     // split is copied from phrasit/src/utils.hpp
     inline std::vector<std::string>& split(const std::string& s, char delim, std::vector<std::string>& elems) {
         std::stringstream ss(s);

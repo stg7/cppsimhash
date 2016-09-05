@@ -1,5 +1,6 @@
 
 #ifndef SIMHASH_H
+#define SIMHASH_H
 
 #include <iostream>
 #include <string>
@@ -29,9 +30,9 @@ namespace hash {
         }
 
         // build 2 grams
-        for (unsigned long i = 0; i < tokens.size() - 1; i ++) {
-            auto t1 = tokens[i];
-            auto t2 = tokens[i + 1];
+        for (unsigned long i = 1; i < tokens.size(); i ++) {
+            auto t1 = tokens[i - 1];
+            auto t2 = tokens[i];
             if (t1 == "") {  ///< ignore empty tokens
                 continue;
             }
@@ -44,11 +45,10 @@ namespace hash {
         }
 
         // build 3 grams
-        for (unsigned long i = 0; i < tokens.size() - 2; i ++) {
-            auto t1 = tokens[i];
-            auto t2 = tokens[i + 1];
-            auto t3 = tokens[i + 2];
-
+        for (unsigned long i = 2; i < tokens.size(); i ++) {
+            auto t1 = tokens[i - 2];
+            auto t2 = tokens[i - 1];
+            auto t3 = tokens[i];
             if (t1 == "") {  ///< ignore empty tokens
                 continue;
             }
@@ -59,7 +59,6 @@ namespace hash {
             }
             features[_3gram] = features[_3gram] + 3;
         }
-
         // do simhashing
         std::vector<long> sim_vec(64);
         for (auto x: features) {
@@ -75,7 +74,6 @@ namespace hash {
                 }
             }
         }
-
         // build result value
         auto res = std::bitset<64>();
         for (int i = 0; i < 64; i++) {

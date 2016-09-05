@@ -1,20 +1,10 @@
 
 #include <string>
 #include <iostream>
-#include <fstream>
 #include <experimental/filesystem>
 
 #include "simhash.hpp"
-
-std::string read_file_as_string(std::string filename) {
-    std::ifstream infile(filename.c_str());
-    std::string result = "";
-    std::string line;
-    while (std::getline(infile, line)) {
-        result += line + "\n";
-    }
-    return result;
-}
+#include "utils.hpp"
 
 int main(int argc, char* argv[]) {
     namespace fs = std::experimental::filesystem;
@@ -30,7 +20,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (argc == 2) {
-        std::cout << hash::simhash(read_file_as_string(argv[1])) << std::endl;
+        std::cout << hash::simhash(utils::read_file_as_string(argv[1])) << std::endl;
     }
 
     if (argc == 3) {
@@ -40,7 +30,7 @@ int main(int argc, char* argv[]) {
             return 1;
         }
         std::cout << "calculate similarity between: " << argv[1] << " and " << argv[2] << std::endl;
-        auto sim = hash::similarity(read_file_as_string(argv[1]), read_file_as_string(argv[2]));
+        auto sim = hash::similarity(utils::read_file_as_string(argv[1]), utils::read_file_as_string(argv[2]));
 
         std::cout << "= " << sim << std::endl;
     }
