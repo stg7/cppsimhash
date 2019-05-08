@@ -6,3 +6,5 @@ config.log
 *.os
 *.so
 
+__pycache__/
+_simidx
